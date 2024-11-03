@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Children's Categories</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li><a href="#Healthy-Recipes">Healthy Recipes</a></li>
+            <li><a href="#Children's-Clothing">Children's Clothing</a></li>
+            <li><a href="#Games-for-Children">Games for Children</a></li>
+            <li><a href="#Educational-Books">Educational Books</a></li>
+        </ul>
+        <div class="cart-icon" onclick="toggleCart()">&#128722; <span id="cart-count">0</span></div>
+    </nav>
+
+    <header>
+        <h1>Welcome to Our Children's Page</h1>
+        <p>Explore categories designed for children and parents</p>
+    </header>
+
+    <section id="categories"></section>
+
+    <div class="cart-dropdown" id="cart">
+        <h2>Your Cart</h2>
+        <div id="cart-items"></div>
+        <p>Total: $<span id="total-price">0</span></p>
+        <button onclick="clearCart()">Clear Cart</button>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Children's World. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

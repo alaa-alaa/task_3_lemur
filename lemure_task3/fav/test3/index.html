@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Children's Categories</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Navigation Bar */
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #ff6f61;
+            padding: 1em;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            gap: 1.5em;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5em 1em;
+            transition: background-color 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: #e85c55;
+            border-radius: 5px;
+        }
+
+        /* Cart Icon in Navbar */
+        .cart-container {
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+
+        .cart-container span {
+            margin-left: 0.5em;
+            font-size: 1.2rem;
+        }
+
+        /* Cart Dropdown */
+        .cart-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 1em;
+            width: 250px;
+            border-radius: 5px;
+            z-index: 100;
+        }
+
+        .cart-dropdown.show {
+            display: block;
+        }
+
+        /* Cart Item */
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1em;
+            padding: 0.5em;
+            border-bottom: 1px solid #eaeaea;
+            background-color: #f9f9f9;
+            /* Changed background color */
+            transition: background-color 0.3s;
+        }
+
+        .cart-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .cart-item span {
+            color: #333;
+        }
+
+        .cart-item button {
+            background-color: #ff6f61;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 0.3em 0.5em;
+            transition: background-color 0.3s;
+        }
+
+        .cart-item button:hover {
+            background-color: #e85c55;
+        }
+
+        /* Main Section */
+        #categories {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 1em;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Category */
+        .category {
+            background-color: #ffecd2;
+            padding: 1em;
+            border-radius: 15px;
+        }
+
+        .category h2 {
+            color: #ff6f61;
+            text-align: center;
+            margin-bottom: 1em;
+        }
+
+        /* Category Cards */
+        .category-cards {
+            display: flex;
+            gap: 1em;
+            flex-wrap: wrap;
+        }
+
+        /* Individual Card */
+        .card {
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1em;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 10px;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .card h3 {
+            margin: 0.5em 0;
+            color: #333;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        .card button {
+            padding: 0.5em 1em;
+            background-color: #ff6f61;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 0.5em;
+        }
+
+        .card button:hover {
+            background-color: #e85c55;
+        }
+
+        /* Favorite Heart Icon */
+        .heart-icon {
+            font-size: 1.5rem;
+            color: #ccc;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            transition: color 0.3s ease;
+        }
+
+        .heart-icon.favorited {
+            color: #ff6f61;
+        }
+
+        /* Checkout Button */
+        .checkout-button {
+            margin-top: 1em;
+            padding: 0.5em 1em;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .checkout-button:hover {
+            background-color: #218838;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 1em;
+            background-color: #ffebcd;
+            color: #333;
+        }
+
+        /* Favorites Section */
+        .favorites-section {
+            background-color: #ffecd2;
+            padding: 1em;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .favorites-section h2 {
+            color: #ff6f61;
+            text-align: center;
+            margin-bottom: 1em;
+        }
+
+        .favorites-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .favorite-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5em;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .favorite-item span {
+            color: #333;
+        }
+
+        .favorite-item button {
+            background-color: #ff6f61;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 0.3em 0.5em;
+            transition: background-color 0.3s;
+        }
+
+        .favorite-item button:hover {
+            background-color: #e85c55;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#Healthy-Recipes">Healthy Recipes</a></li>
+                <li><a href="#Children's-Clothing">Children's Clothing</a></li>
+                <li><a href="#Games-for-Children">Games for Children</a></li>
+                <li><a href="#Educational-Books">Educational Books</a></li>
+            </ul>
+            <div class="cart-container" onclick="toggleCart()">
+                🛒<span id="cart-count">0</span>
+                <div class="cart-dropdown" id="cart">
+                    <h2>Your Cart</h2>
+                    <div id="cart-items"></div>
+                    <p>Total: $<span id="total-price">0</span></p>
+                    <button onclick="clearCart()">Clear Cart</button>
+                    <button class="checkout-button" onclick="checkout()">Checkout</button>
+                </div>
+            </div>
+        </nav>
+        <div class="favorites-section">
+            <h2>Your Favorites</h2>
+            <div class="favorites-list" id="favorites-list"></div>
+        </div>
+    </header>
+    <main>
+        <section id="categories"></section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Children's World. All rights reserved.</p>
+    </footer>
+    <script>
+        const categories = [
+            {
+                category: "Healthy Recipes",
+                items: [
+                    { title: "Fruit Smoothie", image: "images/recipe1.jpg", price: 5 },
+                    { title: "Veggie Wrap", image: "images/recipe2.jpg", price: 6 },
+                    { title: "Oatmeal Pancakes", image: "images/recipe3.jpg", price: 4 }
+                ],
+            },
+            {
+                category: "Children's Clothing",
+                items: [
+                    { title: "Summer Dress", image: "images/clothing1.jpg", price: 15 },
+                    { title: "Cool Shorts", image: "images/clothing2.jpg", price: 12 },
+                    { title: "T-shirt", image: "images/clothing3.jpg", price: 10 }
+                ],
+            },
+            {
+                category: "Games for Children",
+                items: [
+                    { title: "Puzzle Set", image: "images/game1.jpg", price: 20 },
+                    { title: "Board Game", image: "images/game2.jpg", price: 30 },
+                    { title: "Outdoor Ball", image: "images/game3.jpg", price: 15 }
+                ],
+            },
+            {
+                category: "Educational Books",
+                items: [
+                    { title: "Math Workbook", image: "images/book1.jpg", price: 10 },
+                    { title: "Science Adventures", image: "images/book2.jpg", price: 12 },
+                    { title: "Reading for Fun", image: "images/book3.jpg", price: 8 }
+                ],
+            },
+        ];
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+        function addToCart(item) {
+            const existingItem = cart.find(cartItem => cartItem.title === item.title);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({ ...item, quantity: 1 });
+            }
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartItemsDiv = document.getElementById("cart-items");
+            const totalPrice = document.getElementById("total-price");
+            const cartCount = document.getElementById("cart-count");
+
+            cartItemsDiv.innerHTML = "";
+            let total = 0;
+
+            cart.forEach(item => {
+                const cartItemDiv = document.createElement("div");
+                cartItemDiv.classList.add("cart-item");
+                cartItemDiv.innerHTML = `
+                    ${item.title} - $${item.price} x 
+                    <button onclick="decreaseQuantity('${item.title}')">-</button>
+                    <span>${item.quantity}</span>
+                    <button onclick="increaseQuantity('${item.title}')">+</button>
+                    <button onclick="removeFromCart('${item.title}')">Remove</button>`;
+                cartItemsDiv.appendChild(cartItemDiv);
+                total += item.price * item.quantity;
+            });
+
+            totalPrice.innerText = total.toFixed(2);
+            cartCount.innerText = cart.length;
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function increaseQuantity(itemTitle) {
+            const item = cart.find(cartItem => cartItem.title === itemTitle);
+            if (item) {
+                item.quantity++;
+                updateCart(); // Keep cart displayed
+            }
+        }
+
+        function decreaseQuantity(itemTitle) {
+            const item = cart.find(cartItem => cartItem.title === itemTitle);
+            if (item) {
+                if (item.quantity > 1) {
+                    item.quantity--;
+                } else {
+                    removeFromCart(itemTitle);
+                }
+                updateCart(); // Keep cart displayed
+            }
+        }
+
+        function removeFromCart(itemTitle) {
+            cart = cart.filter(item => item.title !== itemTitle);
+            updateCart(); // Keep cart displayed
+        }
+
+        function clearCart() {
+            cart = [];
+            updateCart(); // Keep cart displayed
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+            const items = cart.map(item => `${item.title} - $${item.price} x ${item.quantity}`).join("\n");
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2);
+            const confirmationMessage = `You have purchased:\n${items}\n\nTotal: $${total}\n\nThank you for your purchase!`;
+            alert(confirmationMessage);
+            clearCart(); // Keep cart displayed
+        }
+
+        function toggleFavorite(item) {
+            if (favorites.some(fav => fav.title === item.title)) {
+                favorites = favorites.filter(fav => fav.title !== item.title);
+            } else {
+                favorites.push(item);
+            }
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            updateFavorites();
+        }
+
+        function removeFromFavorites(itemTitle) {
+            favorites = favorites.filter(fav => fav.title !== itemTitle);
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            updateFavorites();
+        }
+
+        function updateFavorites() {
+            const favoritesList = document.getElementById("favorites-list");
+            favoritesList.innerHTML = "";
+
+            favorites.forEach(item => {
+                const favoriteItemDiv = document.createElement("div");
+                favoriteItemDiv.classList.add("favorite-item");
+                favoriteItemDiv.innerHTML = `${item.title} 
+                <button onclick="removeFromFavorites('${item.title}')">Remove</button>`;
+                favoritesList.appendChild(favoriteItemDiv);
+            });
+        }
+
+        function createCardComponent(item) {
+            const card = document.createElement("div");
+            card.classList.add("card");
+
+            const img = document.createElement("img");
+            img.src = item.image;
+            img.alt = item.title;
+
+            const cardTitle = document.createElement("h3");
+            cardTitle.textContent = item.title;
+
+            const priceTag = document.createElement("p");
+            priceTag.textContent = `$${item.price}`;
+
+            const heartIcon = document.createElement("span");
+            heartIcon.classList.add("heart-icon");
+            heartIcon.textContent = "❤️";
+            heartIcon.setAttribute("data-title", item.title);
+            heartIcon.onclick = () => toggleFavorite(item);
+            updateFavoriteIcon(item.title);
+
+            const addToCartButton = document.createElement("button");
+            addToCartButton.textContent = "Add to Cart";
+            addToCartButton.onclick = () => addToCart(item);
+
+            card.appendChild(heartIcon);
+            card.appendChild(img);
+            card.appendChild(cardTitle);
+            card.appendChild(priceTag);
+            card.appendChild(addToCartButton);
+
+            return card;
+        }
+
+        function updateFavoriteIcon(title) {
+            const heartIcons = document.querySelectorAll(`.heart-icon[data-title='${title}']`);
+            heartIcons.forEach(icon => {
+                icon.classList.toggle('favorited', favorites.some(fav => fav.title === title));
+            });
+        }
+
+        function displayCategories() {
+            const categoriesSection = document.getElementById("categories");
+            categoriesSection.innerHTML = "";
+
+            categories.forEach(category => {
+                const categoryDiv = document.createElement("div");
+                categoryDiv.classList.add("category");
+
+                const categoryTitle = document.createElement("h2");
+                categoryTitle.textContent = category.category;
+                categoryDiv.appendChild(categoryTitle);
+
+                const categoryCards = document.createElement("div");
+                categoryCards.classList.add("category-cards");
+
+                category.items.forEach(item => {
+                    const card = createCardComponent(item);
+                    categoryCards.appendChild(card);
+                });
+
+                categoryDiv.appendChild(categoryCards);
+                categoriesSection.appendChild(categoryDiv);
+            });
+        }
+
+        function toggleCart() {
+            document.getElementById("cart").classList.toggle("show");
+        }
+
+        displayCategories();
+        updateCart();
+        updateFavorites();
+    </script>
+</body>
+
+</html>
